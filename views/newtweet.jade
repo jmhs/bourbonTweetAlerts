@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1= title
+    form#formAddTweet(name="addtweet",method="post",action="/addtweet")
+        input#inputTweetBody(type="text", placeholder="tweet body", name="tweetbody")
+        input#inputTweetId(type="text", placeholder="tweet id", name="tweetid")
+        input#inputMessageSent(type="checkbox", name="messagesent")
+        button#btnSubmit(type="submit") submit

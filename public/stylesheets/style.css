@@ -1,0 +1,127 @@
+/* http://bourbonTweetAlerts.cfapps.io
+   v1.0 | 2015
+   License: none (public domain)
+*/
+
+/****************************
+  COMMON STYLES
+****************************/
+
+html { 
+  background: url('../images/bourbonbg.jpg') no-repeat bottom right fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+  
+}
+
+h1, h2, h3, h4 {  
+	color: #FFF;
+  	font-family: 'Noto Serif', serif;
+  	font-style: italic;
+  	padding: 0;
+    margin: 0;
+}
+
+h1 {
+  font-size: 3.0em;
+  margin: 10px;
+  padding-top: 25px;
+}
+
+h4 {
+  font-size: 1.2.5em;
+}
+
+p {
+  color: #504D4A;
+  font-family: 'Nobile', sans-serif;
+  margin: 5px;
+}
+
+a {
+	font-family: 'Nobile', sans-serif;
+  	color: #8A5C2E;
+  	text-decoration: none;
+  	transition: all .25s ease-in-out;
+}
+
+a:hover {
+  color: #5C3D1F;
+}
+
+
+/****************************
+  STRUCTURE
+****************************/
+#content {
+    width: 960px;
+    margin: 0 auto;
+    padding: 0px 0 50px;
+}
+
+/**********************
+STYLES
+**********************/
+.center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+#tweetlink {
+	padding: 10px 0 0;
+	margin: 0;
+	font-size: .5em;
+}
+
+#tweetcreate {
+  text-align: right;
+  font-size: .70em;
+}
+
+/****************************
+  BOXES
+****************************/
+ul {
+  list-style: none;
+  width: 100%;
+  padding: 25px 0 0;
+}
+
+li {
+  width: 80%;
+  display: inline-block;  
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color:rgba(234,234,234, 0.8);
+  transition: all .5s ease-in-out;
+  z-index: 1;
+  -webkit-box-shadow: 0px 0px 25px 0px #eaeaea;
+  -moz-box-shadow: 0px 0px 25px 0px #eaeaea;
+  box-shadow: 0px 0px 25px 0px #eaeaea;
+  border-radius: 2px;
+}
+
+#box1 {
+	width: 12%;
+	padding: 5px;
+	float: left;
+}
+
+#box2 {
+	width: 85%;
+	padding: 5px;
+	float: left;
+}
+
+li img {
+	width: 75px;
+}

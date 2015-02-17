@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    h1(class='center').
+        Bourbon Tweet Alerts
+    h4(class='center').
+        filtered tweets right to your phone
+    ul
+        - each tweet, i in tweets
+            li
+                div#box1
+                    a(href='https://twitter.com/#{tweet.screenName}')
+                        img(src=tweet.avatar)
+                div#box2
+                    p
+                        a(href='https://twitter.com/#{tweet.screenName}') @
+                            = tweet.screenName
+                        | : 
+                        = tweet.body
+                    p#tweetcreate
+                        = tweet.date
+                    p(class='center')#tweetlink
+                        a(href='https://twitter.com/#{tweet.screenName}/status/#{tweet.tweetid}') Link To Tweet

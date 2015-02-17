@@ -1,0 +1,23 @@
+{
+  "name": "bourbonTweetAlerts",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.10.2",
+    "connect": "*",
+    "cookie-parser": "~1.3.3",
+    "debug": "~2.1.1",
+    "es6-shim": "^0.25.0",
+    "express": "~4.11.1",
+    "jade": "~1.9.1",
+    "mongoose": "*",
+    "morgan": "~1.5.1",
+    "nconf": "^0.7.1",
+    "serve-favicon": "~2.2.0",
+    "twit": "^1.1.20",
+    "voice.js": "^0.1.5"
+  }
+}
