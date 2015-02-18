@@ -65,23 +65,25 @@ var T = new Twit({
 });
 
 var stream = T.stream('statuses/filter', { 
-	follow: ['216442829', '2887341'] 
+	follow: ['216442829'] 
 });
 
 var keywords = ['bourbon', 'whiskey', 'whisky', 'rye', 'buffalo', 'parkers', "parker's", 
-				'weller', 'sazerac', 'eagle', 'rare', 'w.l.', 'Sour Mash', 'pappy', 'winkle', 
-				'Bourbon', 'Whiskey', 'Whisky', 'Rye', 'Buffalo', 'Parker', 'Weller', 
-				'Sazerac', 'Thomas', 'Pappy', 'Winkle', 'W.L.', 'sour mash', "Parker's", 'Elijah',
-				'BTAC', 'btac'];
+				'weller', 'sazerac', 'eagle', 'rare', 'w.l.', 'sour mash', 'pappy', 'winkle', 
+				'elijah', 'btac', 'stagg', 'thomas', 'handy', 'four', 'roses'];
 
 var gvclient = new voicejs.Client({
 	email: gv_email,
 	password: gv_password
 });
 
+String.prototype.capitalizeFirst = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 stream.on('tweet', function (tweet) {
-	console.log('New tweet in the queue... ' + tweet.user.screen_name + ': ' + tweet.text);
-	console.log(tweet);
+	console.log('New tweet in the queue| ' + tweet.user.screen_name + ': ' + tweet.text);
+	//console.log(tweet);
 	var body = tweet.text,
 		tweetid = tweet.id_str,
 		avatar = tweet.user.profile_image_url
@@ -89,41 +91,45 @@ stream.on('tweet', function (tweet) {
 
 	//we don't want any RTs
 	if (tweet.retweeted_status == undefined){
+		//we don't want any replies
+		if (tweet.in_reply_to_screen_name == null){
+			//loop keywords
+			keywords.forEach(function(keyword) { 
+	  			//If the tweet contains one of the keywords...
+		  		if (tweet.text.includes(keyword) == true || tweet.text.includes(keyword.toUpperCase()) == true || tweet.text.includes(keyword.capitalizeFirst()) == true){
+		  			//send a text message through google voice
+		  			gvclient.sms({ to: my_number, text: tweet.user.screen_name + ': ' + tweet.text}, function(err, res, data){
+						if(err){
+							return console.log(err);
+						}
+						//console.log('SMS sent!!!!!!!!');
+					});
+					//add it to the database
+		  			mongoose.model('Tweet').create({
+				    	body: body,
+				    	tweetid : tweetid,
+				    	avatar: avatar,
+		  				screenName: screenName,
+		  				date: new Date()
+				    }, function (err, tweetid) {
+					  if (err) {
+					  	//throw err;
+					  	//res.send("There was a problem adding the information to the database.");
+					  	console.log("There was a problem adding the information to the database.");
+					  } 
+					  else {
+				            // If it worked, set the header so the address bar doesn't still say /adduser
+				            //res.location("tweets");
+				            // And forward to success page
+				            //res.redirect("tweets");
+				            console.log("Added TweetID: " + tweetid + " to the database");
+				       }
+					  // saved!
+					})
+		  		}
+		  	})
+		}
 		//loop the keywords
-		keywords.forEach(function(keyword) { 
-	  		//If the tweet contains one of the keywords...
-	  		if (tweet.text.includes(keyword) == true){
-	  			//send a text message through google voice
-	  			gvclient.sms({ to: my_number, text: tweet.user.screen_name + ': ' + tweet.text}, function(err, res, data){
-					if(err){
-						return console.log(err);
-					}
-					//console.log('SMS "' + '" sent to' + '. Conversation id: ', data.send_sms_response.conversation_id);
-				});
-				//add it to the database
-	  			mongoose.model('Tweet').create({
-			    	body: body,
-			    	tweetid : tweetid,
-			    	avatar: avatar,
-	  				screenName: screenName,
-	  				date: Date.now
-			    }, function (err, tweetid) {
-				  if (err) {
-				  	//return handleError(err);
-				  	//res.send("There was a problem adding the information to the database.");
-				  	console.log("There was a problem adding the information to the database.");
-				  } 
-				  else {
-			            // If it worked, set the header so the address bar doesn't still say /adduser
-			            //res.location("tweets");
-			            // And forward to success page
-			            //res.redirect("tweets");
-			            console.log("Added TweetID: " + tweetid + " to the database");
-			       }
-				  // saved!
-				})
-	  		}
-	  	})
 	}
 })
 
