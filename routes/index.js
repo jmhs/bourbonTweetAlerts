@@ -5,7 +5,8 @@ var express = require('express'),
 	es6 = require('es6-shim'),
 	fs    = require('fs'),
     nconf = require('nconf'),
-    voicejs = require('voice.js');
+    sms = require('sms-address'),
+    nodemailer = require('nodemailer');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	mongoose.model('Tweet').find({}).sort({_id: -1}).limit(100).exec(function (err, tweets) {
@@ -55,7 +56,8 @@ var twitter_consumer_key = nconf.get('twitter_consumer_key'),
     twitter_access_token_secret = nconf.get('twitter_access_token_secret'),
     gv_email = nconf.get('gv_email'),
     gv_password = nconf.get('gv_password'),
-    my_number = nconf.get('my_number');
+    my_number = nconf.get('my_number'),
+    my_carrier = nconf.get('my_carrier');
 
 var T = new Twit({
     consumer_key:         twitter_consumer_key
@@ -65,16 +67,21 @@ var T = new Twit({
 });
 
 var stream = T.stream('statuses/filter', { 
-	follow: ['216442829', '111214853', '16066889', '40448079'] 
+	follow: ['216442829', '111214853', '16066889', '40448079', '2939769160'] 
 });
 
 var keywords = ['bourbon', 'whiskey', 'whisky', 'rye', 'buffalo', 'parkers', "parker's", 
 				'weller', 'sazerac', 'eagle', 'rare', 'w.l.', 'wl', 'sour mash', 'pappy', 'winkle', 
 				'elijah', 'btac', 'stagg', 'thomas', 'handy', 'four', 'roses'];
 
-var gvclient = new voicejs.Client({
-	email: gv_email,
-	password: gv_password
+var smsemail = sms(my_number, my_carrier);
+
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: gv_email,
+        pass: gv_password
+    }
 });
 
 String.prototype.capitalizeFirst = function() {
@@ -97,13 +104,12 @@ stream.on('tweet', function (tweet) {
 			keywords.forEach(function(keyword) { 
 	  			//If the tweet contains one of the keywords...
 		  		if (tweet.text.includes(keyword) == true || tweet.text.includes(keyword.toUpperCase()) == true || tweet.text.includes(keyword.capitalizeFirst()) == true){
-		  			//send a text message through google voice
-		  			gvclient.sms({ to: my_number, text: tweet.user.screen_name + ': ' + tweet.text}, function(err, res, data){
-						if(err){
-							return console.log(err);
-						}
-						//console.log('SMS sent!!!!!!!!');
+		  			//send a text message using email-to-sms gateway
+		  			transporter.sendMail({
+					    to: smsemail,
+					    text: tweet.user.screen_name + ': ' + tweet.text
 					});
+
 					//add it to the database
 		  			mongoose.model('Tweet').create({
 				    	body: body,

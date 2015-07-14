@@ -17,7 +17,8 @@ The webapp is almost ready to go out of the box. A few environment variables nee
 	"twitter_access_token_secret": "EYpS********",
 	"gv_email" : "me@gmail.com",
 	"gv_password" : "myGmailPw",
-	"my_number" : "5555555555"
+	"my_number" : "5555555555",
+  "my_carrier" : "AT&T" (look up the https://github.com/regality/sms-address/blob/master/carriers.json for carriers)
 }
 ```
 
