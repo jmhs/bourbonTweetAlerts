@@ -4,11 +4,11 @@ var express = require('express'),
 	Twit = require('twit'),
 	es6 = require('es6-shim'),
 	fs    = require('fs'),
-    nconf = require('nconf');
+    nconf = require('nconf'),
     voicejs = require('voice.js');
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	mongoose.model('Tweet').find({}).sort({_id: -1}).exec(function (err, tweets) {
+	mongoose.model('Tweet').find({}).sort({_id: -1}).limit(100).exec(function (err, tweets) {
 	  	if (err) return console.error(err);
 	  	res.render('index', {
 	  		title: 'Filtered Bourbon Tweets',
@@ -65,11 +65,11 @@ var T = new Twit({
 });
 
 var stream = T.stream('statuses/filter', { 
-	follow: ['216442829'] 
+	follow: ['216442829', '111214853', '16066889', '40448079'] 
 });
 
 var keywords = ['bourbon', 'whiskey', 'whisky', 'rye', 'buffalo', 'parkers', "parker's", 
-				'weller', 'sazerac', 'eagle', 'rare', 'w.l.', 'sour mash', 'pappy', 'winkle', 
+				'weller', 'sazerac', 'eagle', 'rare', 'w.l.', 'wl', 'sour mash', 'pappy', 'winkle', 
 				'elijah', 'btac', 'stagg', 'thomas', 'handy', 'four', 'roses'];
 
 var gvclient = new voicejs.Client({
