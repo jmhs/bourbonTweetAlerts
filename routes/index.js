@@ -67,7 +67,7 @@ var T = new Twit({
 });
 
 var stream = T.stream('statuses/filter', { 
-	follow: ['216442829', '111214853', '16066889', '40448079', '2939769160'] 
+	follow: ['216442829', '111214853', '16066889', '40448079'] 
 });
 
 var keywords = ['bourbon', 'whiskey', 'whisky', 'rye', 'buffalo', 'parkers', "parker's", 
