@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "0.12"
-  - "0.10"
 services:
   - mongodb
+env:
+  - twitter_consumer_key=87f******** twitter_consumer_secret=QW53******** twitter_access_token=288734******** twitter_access_token_secret=EYpS******** gv_email=me@gmail.com gv_password=myGmailPw my_number=5555555555 my_carrier=AT&T
